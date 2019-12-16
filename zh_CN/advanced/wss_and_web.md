@@ -80,6 +80,8 @@ server {
 
 因为 Caddy 会自动申请证书并自动更新，所以使用 Caddy 不用指定证书、密钥。  
 
+Caddy 1
+
 ```
 mydomain.me
 {
@@ -87,6 +89,20 @@ mydomain.me
   proxy /ray localhost:10000 {
     websocket
     header_upstream -Origin
+  }
+}
+```
+
+Caddy 2
+
+```
+mydomain.me
+{
+  log ./caddy.log
+  reverse_proxy /ray localhost:10000 {
+    header_up Connection {http.request.header.Connection}
+    header_up Upgrade {http.request.header.Upgrade}
+    header_up -Origin
   }
 }
 ```
